@@ -10,7 +10,7 @@ FILE = None
 # Load ENV globals
 load_dotenv()
 RESULTS_PATH = path.normpath(getenv("RESULTS_PATH", "./results"))
-TEST_INTERVAL_SECS = getenv("TEST_INTERVAL_SECS", 900)
+TEST_INTERVAL_SECS = int(getenv(("TEST_INTERVAL_SECS"), 900))
 
 
 def log_results(results: SpeedtestResults):
