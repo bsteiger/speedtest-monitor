@@ -1,21 +1,25 @@
 import json
 import logging
-from os import path, mkdir
+from os import path, mkdir, getenv
 from time import sleep
 from speedtest import Speedtest, SpeedtestResults
-
-TEST_INTERVAL = 15 * 60  #how long to wait between runs in seconds
+from dotenv import load_dotenv
 
 FILE = None
+
+# Load ENV globals
+load_dotenv()
+RESULTS_PATH = path.normpath(getenv("RESULTS_PATH", "./results"))
+TEST_INTERVAL_SECS = getenv("TEST_INTERVAL_SECS", 900)
 
 
 def log_results(results: SpeedtestResults):
     print(
         f"[{results.timestamp}]\tDown:\t{results.download/10**6:.2f}Mbps\n\t\t\t\tUp:\t{results.upload/10**6:.2f}Mbps"
     )
-    global FILE
+    # global FILE
     # if FILE is None:
-    FILE = path.normpath(f'./results/{results.timestamp}.json')
+    FILE = path.join(RESULTS_PATH, f"{results.timestamp}.json")
     with open(FILE, 'w+') as f:
         f.write(results.json(pretty=True))
 
@@ -30,4 +34,4 @@ while True:
 
     # Do something with the results
     log_results(speedtest.results)
-    sleep(TEST_INTERVAL)
+    sleep(TEST_INTERVAL_SECS)
