@@ -8,6 +8,7 @@ yapf = "*"
 
 [packages]
 speedtest-cli = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.9"
